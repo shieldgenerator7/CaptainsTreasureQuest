@@ -31,7 +31,7 @@ public class PieceController : MonoBehaviour
     {
         if ((Vector2)transform.position != targetPos)
         {
-            transform.position += (Vector3)(targetPos - (Vector2)transform.position).normalized * Time.deltaTime;
+            transform.position += (Vector3)(targetPos - (Vector2)transform.position).normalized * moveSpeed * Time.deltaTime;
             float dist = Vector2.Distance(transform.position, targetPos);
             if (dist <= arriveThreshold)
             {

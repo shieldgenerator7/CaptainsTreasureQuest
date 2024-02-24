@@ -20,7 +20,7 @@ public class PieceController : MonoBehaviour
         }
         transform.position = (Vector2)piece.Position;
         targetPos = piece.Position;
-        piece.OnPositionChanged += (pos) => targetPos = (Vector2)pos;
+        piece.OnPositionChanged += (pos) => targetPos = Keepers.Map.getWorldPos(pos);
     }
 
     // Update is called once per frame

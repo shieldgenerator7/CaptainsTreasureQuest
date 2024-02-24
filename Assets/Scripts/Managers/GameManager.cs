@@ -51,8 +51,7 @@ public class GameManager : MonoBehaviour
                 return;
             }
             LevelTile tile = Keepers.Map.getTile(curMPWorld);
-            Vector2 movePos = Keepers.Map.getWorldPos(tile.Position);
-            GameObject.FindFirstObjectByType<PieceController>().move(new Vector2Int((int)movePos.x, (int)movePos.y));
+            GameObject.FindFirstObjectByType<PieceController>().move(tile.Position);
             levelManager.processTapGesture(curMPWorld);
             Managers.Camera.checkForAutomovement(curMPWorld);
         };

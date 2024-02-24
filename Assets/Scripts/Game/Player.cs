@@ -49,6 +49,9 @@ public class Player
         });
     }
 
+    public bool CanDetect(Vector2Int pos)
+        => mapDetect.Contains(pos);
+
     //
     // Reveal Tile
     //
@@ -77,7 +80,7 @@ public class Player
     // Flag Tile
     //
 
-    public bool TileFlagged(Vector2Int pos) 
+    public bool TileFlagged(Vector2Int pos)
         => mapFlagged.Contains(pos);
 
 

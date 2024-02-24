@@ -8,6 +8,7 @@ public class MovePattern : ScriptableObject
 {
     //public List<MovePart> moveParts;
     public bool allowJump = false;
+    [SerializeField]
     public List<Vector2> allowedMoves = new List<Vector2>()
     {
         Vector2.zero

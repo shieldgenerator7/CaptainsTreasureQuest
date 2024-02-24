@@ -44,6 +44,7 @@ public class MovePatternEditor : Editor
                 if (newcheck != prevcheck)
                 {
                     mp.setMove(x, y, newcheck);
+                    EditorUtility.SetDirty(target);
                 }
             }
         }

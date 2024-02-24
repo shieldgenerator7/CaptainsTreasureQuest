@@ -41,7 +41,7 @@ public class TileRevealer : MonoBehaviour
         List<LevelTile> revealLater = new List<LevelTile>();
         foreach (LevelTile lt in tilesToReveal)
         {
-            player.RevealTile(lt, true);
+            player.RevealTile(lt.Position, true);
             //Surrounding tiles
             List<LevelTile> surroundingTiles = Keepers.Map.TileMap.getSurroundingLandTiles(lt.Position);
             bool emptyAllAround = !surroundingTiles.Any(lt => lt.Detectable);
@@ -49,7 +49,7 @@ public class TileRevealer : MonoBehaviour
             {
                 foreach (LevelTile slt in surroundingTiles)
                 {
-                    if (!player.TileRevealed(slt) && !player.TileFlagged(slt)
+                    if (!player.TileRevealed(slt.Position) && !player.TileFlagged(slt.Position)
                         && !tilesToReveal.Contains(slt) && !revealLater.Contains(slt)
                         )
                     {

@@ -31,9 +31,9 @@ public class MapKeeper
         return Mathf.RoundToInt(pos.y + gridHeight / 2);
     }
 
-    public Vector2 getGridPos(Vector2 worldPos)
+    public Vector2Int getGridPos(Vector2 worldPos)
     {
-        return new Vector2(getXIndex(worldPos), getYIndex(worldPos));
+        return new Vector2Int(getXIndex(worldPos), getYIndex(worldPos));
     }
 
     public Vector2 getWorldPos(Vector2 iv)

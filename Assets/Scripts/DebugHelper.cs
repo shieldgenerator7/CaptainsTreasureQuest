@@ -33,7 +33,7 @@ public class DebugHelper : MonoBehaviour
         {
             if (lt.Content == selectContent)
             {
-                Keepers.Player.RevealTile(lt);
+                Keepers.Player.RevealTile(lt.Position);
             }
         }
     }

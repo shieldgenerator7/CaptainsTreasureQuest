@@ -121,7 +121,7 @@ public class TileMap
     {
         Player player = Keepers.Player;
         return getSurroundingLandTiles(pos).Count(
-            slt => (player.TileFlagged(slt) == true) != notFlagged
+            slt => (player.TileFlagged(slt.Position) == true) != notFlagged
             );
     }
 
@@ -133,9 +133,9 @@ public class TileMap
     /// <param name="notRevealed">True to get the amount that is NOT revealed</param>
     /// <returns></returns>
     public int getAdjacentRevealedCount(Vector2Int pos, bool notRevealed = false)
-    {
+    {//TODO: maybe move this method to player or game
         Player player = Keepers.Player;
-        return getSurroundingLandTiles(pos).Count(slt => (player.TileRevealed(slt) == true) != notRevealed);
+        return getSurroundingLandTiles(pos).Count(slt => (player.TileRevealed(slt.Position) == true) != notRevealed);
     }
 
     /// <summary>

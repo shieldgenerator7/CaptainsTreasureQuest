@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
                     return;
                 }
                 Player player = Keepers.Player;
-                if (!player.TileRevealed(lt) || Keepers.Map.TileMap.getDetectedCount(lt.Position) > 0
+                if (!player.TileRevealed(lt.Position) || Keepers.Map.TileMap.getDetectedCount(lt.Position) > 0
                     || lt == levelManager.StartTile || (Managers.Player.completedMap() && lt == levelManager.XTile)
                     || (lt.Content == LevelTile.Contents.MAP)
                     )

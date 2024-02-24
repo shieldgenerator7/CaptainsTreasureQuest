@@ -25,14 +25,14 @@ public class LevelTileController : MonoBehaviour
     {
         Keepers.Player.OnFlagTile += (tile, flag) =>
         {
-            if (tile == levelTile)
+            if (tile == levelTile.Position)
             {
                 updateFlagged(flag);
             }
         };
-        Keepers.Player.OnRevealTile += (tile, reveal) =>
+        Keepers.Player.OnRevealPosition += (tile, reveal) =>
         {
-            if (tile == levelTile)
+            if (tile == levelTile.Position)
             {
                 updateRevealed(reveal);
             }

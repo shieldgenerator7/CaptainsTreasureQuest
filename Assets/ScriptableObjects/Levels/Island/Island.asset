@@ -20,7 +20,5 @@ MonoBehaviour:
   postStartLevelGenerators:
   - {fileID: 11400000, guid: 8227b10185831fb42882e65a838eb91e, type: 2}
   - {fileID: 11400000, guid: 54132b4d60c5a5247b649153032e0e19, type: 2}
-  - {fileID: 11400000, guid: 9ffb1660de7ddd74fbd3a0ec2551f102, type: 2}
   - {fileID: 11400000, guid: 8e211a4679a31ac43835a178232e26b3, type: 2}
-  postRevealLevelGenerators:
-  - {fileID: 11400000, guid: 9ffb1660de7ddd74fbd3a0ec2551f102, type: 2}
+  postRevealLevelGenerators: []

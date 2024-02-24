@@ -30,7 +30,7 @@ public class LevelTileController : MonoBehaviour
                 updateFlagged(flag);
             }
         };
-        Keepers.Player.OnRevealPosition += (tile, reveal) =>
+        Keepers.Player.OnRevealTile += (tile, reveal) =>
         {
             if (tile == levelTile.Position)
             {

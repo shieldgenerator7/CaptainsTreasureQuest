@@ -7,14 +7,18 @@ public class Game
     public List<Player> players = new List<Player>();
     public TileMap map;
 
-    public void startGame(TileMap map)
+    public Game()
     {
-        this.map = map;
         int playerCount = 2;
-        while(players.Count < playerCount)
+        while (players.Count < playerCount)
         {
             players.Add(new Player());
         }
+    }
+
+    public void startGame(TileMap map)
+    {
+        this.map = map;
     }
 
     public Player ActivePlayer => Player1;//TODO: switch between players

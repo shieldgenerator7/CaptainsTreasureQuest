@@ -32,7 +32,8 @@ public class GamePiece
     }
 
     public List<Vector2Int> Detects =>
-        piece.detectPattern.allowedMoves
-        .ConvertAll(v => v + _position);
+        piece.detectPattern?.allowedMoves
+        .ConvertAll(v => v + _position)
+        ?? new List<Vector2Int>();
 
 }

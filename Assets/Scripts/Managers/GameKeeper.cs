@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameKeeper
 {
-    private Game game;
+    private Game game = new Game();
     public Game Game => game;
 
     public void newGame(TileMap map)

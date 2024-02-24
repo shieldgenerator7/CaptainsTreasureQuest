@@ -228,14 +228,11 @@ public class LevelManager : MonoBehaviour
             if (foundLT.Content != LevelTile.Contents.MAP)
             {
                 //Reveal the found LT
-                revealTile(foundLT, true);
+                revealTile(foundLT);
                 //Reveal the tiles around the found LT
                 foreach (LevelTile levelTile in tileMap.getSurroundingLandTiles(foundLT.Position))
                 {
-                    if (player.TileRevealed(levelTile.Position))
-                    {
-                        revealTile(levelTile, true);
-                    }
+                        revealTile(levelTile);
                 }
                 //Check if goals have been achieved
                 if (Managers.Player.GoalAchieved)
@@ -436,13 +433,10 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void revealTile(LevelTile lt, bool forceReveal = false)
+    private void revealTile(LevelTile lt)
     {
         Player player = Keepers.Player;
-        if ((!player.TileRevealed(lt.Position) || forceReveal) && !player.TileFlagged(lt.Position))
-        {
-            Managers.TileRevealer.revealTilesAround(lt);
-        }
+        player.RevealTile(lt.Position, true);
     }
 
     /// <summary>

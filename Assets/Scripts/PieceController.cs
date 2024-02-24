@@ -14,15 +14,15 @@ public class PieceController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (piece == null)
-        {
+        //if (piece == null)
+        //{
             piece = new GamePiece(_piece);
-        }
+        //}
         transform.position = (Vector2)piece.Position;
         targetPos = piece.Position;
         piece.OnPositionChanged += (pos) => targetPos = Keepers.Map.getWorldPos(pos);
         //
-        Keepers.Player.addPiece(piece);//dirty: should not be accessing player directly
+        
     }
 
     // Update is called once per frame

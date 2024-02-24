@@ -36,7 +36,12 @@ public class GameManager : MonoBehaviour
         {
             PieceController piece = GameObject.FindFirstObjectByType<PieceController>();
             piece.teleport(pos);
+            Keepers.Player.addPiece(piece.piece);//dirty: should not be accessing player directly
         };
+
+        //Tile Revealer
+        Keepers.Player.OnRevealTile += (pos, reveal) =>
+            Managers.TileRevealer.revealTilesAround(Keepers.Map.getTile(pos));
 
         //Keepers
         Keepers.Map.OnMapChanged += (map) => Keepers.Game.newGame(map);

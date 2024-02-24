@@ -60,7 +60,7 @@ public class Player
         //early exit: tile is flagged
         if (TileFlagged(pos)) { return; }
         //early exit: tile is outside detect range
-        if (!mapDetect.Contains(pos)) { return; }
+        if (mapDetect.Count > 0 && !mapDetect.Contains(pos)) { return; }
 
         //reveal tile
         bool changed = mapRevealed.Include(pos, reveal);
@@ -68,10 +68,10 @@ public class Player
         //delegate
         if (changed)
         {
-            OnRevealPosition?.Invoke(pos, reveal);
+            OnRevealTile?.Invoke(pos, reveal);
         }
     }
-    public Action<Vector2Int, bool> OnRevealPosition;
+    public Action<Vector2Int, bool> OnRevealTile;
 
     //
     // Flag Tile

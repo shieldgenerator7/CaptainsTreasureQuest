@@ -8,6 +8,7 @@ public class PieceController : MonoBehaviour
     public Piece _piece;
 
     public float moveSpeed = 2;//TODO: move this into an attributes file
+    public float arriveThreshold = 0.1f;//TODO: move this into an attributes file
 
     private Vector2 targetPos;
 
@@ -31,6 +32,11 @@ public class PieceController : MonoBehaviour
         if ((Vector2)transform.position != targetPos)
         {
             transform.position += (Vector3)(targetPos - (Vector2)transform.position).normalized * Time.deltaTime;
+            float dist = Vector2.Distance(transform.position, targetPos);
+            if (dist <= arriveThreshold)
+            {
+                transform.position = targetPos;
+            }
         }
     }
 

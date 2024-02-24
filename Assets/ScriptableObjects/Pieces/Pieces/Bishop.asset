@@ -16,5 +16,5 @@ MonoBehaviour:
   capturePattern: {fileID: 11400000, guid: 8dc9b34c3972227469f9fc55719dab26, type: 2}
   shootPattern: {fileID: 0}
   visionPattern: {fileID: 11400000, guid: 8dc9b34c3972227469f9fc55719dab26, type: 2}
-  detectPattern: {fileID: 11400000, guid: 908cc07362eaef64eb9a5adea6c22a2a, type: 2}
+  detectPattern: {fileID: 11400000, guid: e272da2c6012cdd45a29a193aa8a8519, type: 2}
   digPattern: {fileID: 11400000, guid: 3a42078267c944049b4d4027a7686421, type: 2}

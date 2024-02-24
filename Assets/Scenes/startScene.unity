@@ -152,8 +152,8 @@ MonoBehaviour:
   piece:
     _position: {x: 0, y: 0}
   _piece: {fileID: 11400000, guid: 3880c01144f30164c8a199bb4c96397d, type: 2}
-  moveSpeed: 2
-  arriveThreshold: 0.1
+  moveSpeed: 20
+  arriveThreshold: 0.2
 --- !u!212 &60448170
 SpriteRenderer:
   m_ObjectHideFlags: 0

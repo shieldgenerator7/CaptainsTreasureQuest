@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using static LevelTile;
 
 public class Player
 {
@@ -34,7 +32,7 @@ public class Player
         //early exit: tile is water
         if (!tile.Walkable) { return; }
         //early exit: tile is flagged
-        if (tile.Flagged) { return; }
+        if (TileFlagged(tile)) { return; }
 
         //reveal tile
         bool changed = revealedTiles.Include(tile, reveal);
@@ -51,6 +49,27 @@ public class Player
     // Flag Tile
     //
 
+    public bool TileFlagged(LevelTile tile) =>
+        (tile.Walkable)
+            ? flaggedTiles.Contains(tile)
+            : false;
+
+    public void FlagTile(LevelTile tile, bool flag)
+    {
+        //early exit: tile is water
+        if (!tile.Walkable) { return; }
+        //early exit: tile is revealed
+        if (TileRevealed(tile)) { return; }
+
+        //flag tile
+        bool changed = flaggedTiles.Include(tile, flag);
+
+        //delegate
+        if (changed)
+        {
+            OnFlagTile?.Invoke(tile, flag);
+        }
+    }
     public Action<LevelTile, bool> OnFlagTile;
 
     //

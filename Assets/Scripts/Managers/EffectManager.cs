@@ -36,7 +36,7 @@ public class EffectManager : MonoBehaviour
         Vector2 position = Keepers.Map.getPosition(tile);
         //Determine change type
         ChangeHighlighter.ChangeType changeType = ChangeHighlighter.ChangeType.NEUTRAL;
-        if (tile.Flagged)
+        if (player.TileFlagged(tile))
         {
             changeType = ChangeHighlighter.ChangeType.WARN;
         }

@@ -49,7 +49,7 @@ public class TileRevealer : MonoBehaviour
             {
                 foreach (LevelTile slt in surroundingTiles)
                 {
-                    if (!player.TileRevealed(slt) && !slt.Flagged
+                    if (!player.TileRevealed(slt) && !player.TileFlagged(slt)
                         && !tilesToReveal.Contains(slt) && !revealLater.Contains(slt)
                         )
                     {

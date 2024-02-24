@@ -55,27 +55,6 @@ public class LevelTile
         this.Walkable = false;
     }
 
-    /// <summary>
-    /// True if this tile has a flag on it
-    /// </summary>
-    public bool Flagged
-    {
-        get => (Walkable)
-            ? flagged
-            : false;
-        set
-        {
-            //if (!revealed)
-            //{
-                flagged = value;
-                onFlaggedChanged?.Invoke(flagged);
-            //}
-        }
-    }
-    private bool flagged = false;
-    public delegate void OnFlaggedChanged(bool flagged);
-    public OnFlaggedChanged onFlaggedChanged;
-
     public bool Available
         => contents == Contents.NONE && !Locked && Walkable;
 

@@ -290,7 +290,7 @@ public class LevelManager : MonoBehaviour
                     //Reveal the surrounding non-flagged tiles
                     foreach (LevelTile neighbor in tileMap.getSurroundingLandTiles(lt.Position))
                     {
-                        if (!neighbor.Flagged && !player.TileRevealed(neighbor))
+                        if (!player.TileFlagged(neighbor) && !player.TileRevealed(neighbor))
                         {
                             if (neighbor.Content == LevelTile.Contents.TRAP)
                             {
@@ -317,7 +317,7 @@ public class LevelManager : MonoBehaviour
                     //Flag the surrounding non-revealed tiles
                     foreach (LevelTile neighbor in tileMap.getSurroundingLandTiles(lt.Position))
                     {
-                        if (!neighbor.Flagged && !player.TileRevealed(neighbor))
+                        if (!player.TileFlagged(neighbor) && !player.TileRevealed(neighbor))
                         {
                             //Flag it
                             processFlagGesture(mapKeeper.getPosition(neighbor));
@@ -326,7 +326,7 @@ public class LevelManager : MonoBehaviour
                 }
             }
             //If it's not flagged
-            if (!lt.Flagged)
+            if (!player.TileFlagged(lt))
             {
                 if (!anyRevealed)
                 {
@@ -393,7 +393,7 @@ public class LevelManager : MonoBehaviour
         LevelTile lt = mapKeeper.getTile(flagPos);
         if (!player.TileRevealed(lt))
         {
-            lt.Flagged = !lt.Flagged;
+            player.FlagTile(lt, !player.TileFlagged(lt));
             Managers.Effect.highlightChange(lt);
             //Update flag counters (fc)
             foreach (LevelTile fc in mapKeeper.TileMap.getSurroundingLandTiles(lt.Position))
@@ -439,7 +439,7 @@ public class LevelManager : MonoBehaviour
     private void revealTile(LevelTile lt, bool forceReveal = false)
     {
         Player player = Keepers.Player;
-        if ((!player.TileRevealed(lt) || forceReveal) && !lt.Flagged)
+        if ((!player.TileRevealed(lt) || forceReveal) && !player.TileFlagged(lt))
         {
             Managers.TileRevealer.revealTilesAround(lt);
         }

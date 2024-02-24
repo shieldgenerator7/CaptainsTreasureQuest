@@ -119,8 +119,9 @@ public class TileMap
     /// <returns></returns>
     public int getAdjacentFlagCount(Vector2Int pos, bool notFlagged = false)
     {
+        Player player = Keepers.Player;
         return getSurroundingLandTiles(pos).Count(
-            slt => (slt.Flagged == true) != notFlagged
+            slt => (player.TileFlagged(slt) == true) != notFlagged
             );
     }
 

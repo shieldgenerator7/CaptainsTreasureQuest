@@ -51,6 +51,6 @@ public class MovePatternEditor : Editor
 
         GUILayout.Space(start.y + (maxRange + 2) * buffer);
 
-        DrawDefaultInspector();
+        //DrawDefaultInspector();
     }
 }

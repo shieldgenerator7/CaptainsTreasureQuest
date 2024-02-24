@@ -51,6 +51,30 @@ public class MovePatternEditor : Editor
 
         GUILayout.Space(start.y + (maxRange + 2) * buffer);
 
+        if (GUILayout.Button("Select All"))
+        {
+            for (int x = -maxRange; x <= maxRange; x++)
+            {
+                for (int y = -maxRange; y <= maxRange; y++)
+                {
+                    mp.setMove(x, y, true);
+                    EditorUtility.SetDirty(target);
+                }
+            }
+        }
+
+        if (GUILayout.Button("Deselect All"))
+        {
+            for (int x = -maxRange; x <= maxRange; x++)
+            {
+                for (int y = -maxRange; y <= maxRange; y++)
+                {
+                    mp.setMove(x, y, false);
+                    EditorUtility.SetDirty(target);
+                }
+            }
+        }
+
         //DrawDefaultInspector();
     }
 }

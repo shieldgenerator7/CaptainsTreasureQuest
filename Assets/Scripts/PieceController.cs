@@ -35,14 +35,17 @@ public class PieceController : MonoBehaviour
     public void teleport(Vector2Int pos)
     {
         piece.Position = pos;
+        transform.position = Keepers.Map.getWorldPos(pos);
     }
 
-    public void move(Vector2Int pos)
+    public bool move(Vector2Int pos)
     {
-        if (canMove(pos))
+        if (!canMove(pos))
         {
-            piece.Position = pos;
+            return false;
         }
+        piece.Position = pos;
+        return true;
     }
 
     public bool canMove(Vector2Int pos)

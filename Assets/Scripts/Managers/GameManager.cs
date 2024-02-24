@@ -34,7 +34,8 @@ public class GameManager : MonoBehaviour
         //Level
         levelManager.OnStartPositionChanged += (pos) =>
         {
-            GameObject.FindFirstObjectByType<PieceController>().teleport(pos);
+            PieceController piece = GameObject.FindFirstObjectByType<PieceController>();
+            piece.teleport(pos);
         };
     }
 

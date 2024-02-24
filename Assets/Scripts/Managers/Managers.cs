@@ -43,7 +43,7 @@ public class Managers : MonoBehaviour
     }
 
     private LevelManager levelManager;
-    public static LevelManager Level
+    public static LevelManager LevelMan
     {
         get
         {

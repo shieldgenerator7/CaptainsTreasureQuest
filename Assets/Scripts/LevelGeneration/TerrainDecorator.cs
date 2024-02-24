@@ -11,7 +11,7 @@ public class TerrainDecorator : LevelGenerator
 
     public override void generate(TileMap tileMap)
     {
-        List<LevelTile> tiles = Managers.Level.TileMap.getTiles(lt => lt.Walkable);
+        List<LevelTile> tiles = tileMap.getTiles(lt => lt.Walkable);
         if (count < 0)
         {
             tiles.ForEach(lt => lt.terrain = terrain);

@@ -42,10 +42,10 @@ public class GameManager : MonoBehaviour
                 Managers.Camera.pinpoint();
                 return;
             }
-            LevelTile tile = Managers.Level.getTile(curMPWorld);
-            Vector2 movePos = Managers.Level.getWorldPos(tile.Position);
+            LevelTile tile = levelManager.getTile(curMPWorld);
+            Vector2 movePos = levelManager.getWorldPos(tile.Position);
             GameObject.FindFirstObjectByType<PieceController>().move(new Vector2Int((int)movePos.x, (int)movePos.y));
-            Managers.Level.processTapGesture(curMPWorld);
+            levelManager.processTapGesture(curMPWorld);
             Managers.Camera.checkForAutomovement(curMPWorld);
         };
         //Hold
@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
                 Managers.Camera.pinpoint();
                 return;
             }
-            Managers.Level.processHoldGesture(curMPWorld, finished);
+            levelManager.processHoldGesture(curMPWorld, finished);
             if (finished)
             {
                 Managers.Camera.checkForAutomovement(curMPWorld);
@@ -73,13 +73,13 @@ public class GameManager : MonoBehaviour
             Managers.Effect.hideCursor();
             if (show)
             {
-                LevelTile lt = Managers.Level.getTile(curMPWorld);
+                LevelTile lt = levelManager.getTile(curMPWorld);
                 if (lt == null || !lt.Walkable)
                 {
                     return;
                 }
-                if (!lt.Revealed || Managers.Level.TileMap.getDetectedCount(lt.Position) > 0
-                    || lt == Managers.Level.StartTile || (Managers.Player.completedMap() && lt == Managers.Level.XTile)
+                if (!lt.Revealed || levelManager.TileMap.getDetectedCount(lt.Position) > 0
+                    || lt == levelManager.StartTile || (Managers.Player.completedMap() && lt == levelManager.XTile)
                     || (lt.Content == LevelTile.Contents.MAP)
                     )
                 {

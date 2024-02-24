@@ -232,6 +232,9 @@ public class LevelManager : MonoBehaviour
         {
             lgen.generatePostStart(tileMap, itaX, itaY);
         }
+
+        Managers.Start.SetActive(true);
+        Managers.Start.transform.position = getWorldPos(itaX, itaY);
     }
 
     private void generatePostItemReveal(LevelTile.Contents content)

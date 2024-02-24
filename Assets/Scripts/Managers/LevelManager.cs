@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class LevelManager : MonoBehaviour
 {//2018-01-02: copied from WolfSim.LevelManager
@@ -200,7 +202,10 @@ public class LevelManager : MonoBehaviour
 
         Managers.Start.SetActive(true);
         Managers.Start.transform.position = mapKeeper.getWorldPos(itaX, itaY);
+        OnStartPositionChanged?.Invoke(new Vector2Int(itaX, itaY));
+
     }
+    public Action<Vector2Int> OnStartPositionChanged;
 
     private void generatePostItemReveal(LevelTile.Contents content)
     {

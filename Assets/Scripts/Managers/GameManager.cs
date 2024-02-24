@@ -27,8 +27,15 @@ public class GameManager : MonoBehaviour
 
     void hookupDelegates()
     {
+        //Gesture
         GestureProfile gpMineSweeper = createMineSweeperGestureProfile();
         gestureManager.addGestureProfile("MineSweeper", gpMineSweeper);
+
+        //Level
+        levelManager.OnStartPositionChanged += (pos) =>
+        {
+            GameObject.FindFirstObjectByType<PieceController>().teleport(pos);
+        };
     }
 
     GestureProfile createMineSweeperGestureProfile()

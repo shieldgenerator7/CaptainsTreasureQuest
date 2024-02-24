@@ -32,7 +32,7 @@ public class PieceController : MonoBehaviour
         }
     }
 
-    public void move(Vector2Int pos)
+    public void teleport(Vector2Int pos)
     {
         piece.Position = pos;
     }

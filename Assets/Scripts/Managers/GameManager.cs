@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     void init()
     {
         gestureManager = new GestureManager(gestureSettings);
+        levelManager.mapKeeper = Keepers.Map;
     }
 
     void hookupDelegates()
@@ -42,8 +43,8 @@ public class GameManager : MonoBehaviour
                 Managers.Camera.pinpoint();
                 return;
             }
-            LevelTile tile = levelManager.getTile(curMPWorld);
-            Vector2 movePos = levelManager.getWorldPos(tile.Position);
+            LevelTile tile = Keepers.Map.getTile(curMPWorld);
+            Vector2 movePos = Keepers.Map.getWorldPos(tile.Position);
             GameObject.FindFirstObjectByType<PieceController>().move(new Vector2Int((int)movePos.x, (int)movePos.y));
             levelManager.processTapGesture(curMPWorld);
             Managers.Camera.checkForAutomovement(curMPWorld);
@@ -73,12 +74,12 @@ public class GameManager : MonoBehaviour
             Managers.Effect.hideCursor();
             if (show)
             {
-                LevelTile lt = levelManager.getTile(curMPWorld);
+                LevelTile lt = Keepers.Map.getTile(curMPWorld);
                 if (lt == null || !lt.Walkable)
                 {
                     return;
                 }
-                if (!lt.Revealed || levelManager.TileMap.getDetectedCount(lt.Position) > 0
+                if (!lt.Revealed || Keepers.Map.TileMap.getDetectedCount(lt.Position) > 0
                     || lt == levelManager.StartTile || (Managers.Player.completedMap() && lt == levelManager.XTile)
                     || (lt.Content == LevelTile.Contents.MAP)
                     )

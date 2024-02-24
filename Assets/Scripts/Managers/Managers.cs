@@ -42,19 +42,6 @@ public class Managers : MonoBehaviour
         }
     }
 
-    private LevelManager levelManager;
-    public static LevelManager LevelMan
-    {
-        get
-        {
-            if (instance.levelManager == null)
-            {
-                instance.levelManager = FindObjectOfType<LevelManager>();
-            }
-            return instance.levelManager;
-        }
-    }
-
     private EffectManager effectManager;
     public static EffectManager Effect
     {

@@ -20,7 +20,7 @@ public class MapLineGenerator : LevelGenerator
     {
         get
         {
-            return Managers.LevelMan.getWorldPos(mapPath[0]);
+            return Keepers.Map.getWorldPos(mapPath[0]);
         }
     }
 
@@ -28,13 +28,13 @@ public class MapLineGenerator : LevelGenerator
     {
         get
         {
-            return Managers.LevelMan.getWorldPos(mapPath[mapPath.Count - 1]);
+            return Keepers.Map.getWorldPos(mapPath[mapPath.Count - 1]);
         }
     }
 
     public Vector2 getPosition(int pointIndex)
     {
-        return Managers.LevelMan.getWorldPos(mapPath[pointIndex]);
+        return Keepers.Map.getWorldPos(mapPath[pointIndex]);
     }
 
     public override void generate(TileMap tileMap)

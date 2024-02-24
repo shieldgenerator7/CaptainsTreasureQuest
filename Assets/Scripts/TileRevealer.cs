@@ -42,7 +42,7 @@ public class TileRevealer : MonoBehaviour
         {
             lt.Revealed = true;
             //Surrounding tiles
-            List<LevelTile> surroundingTiles = Managers.LevelMan.TileMap.getSurroundingLandTiles(lt.Position);
+            List<LevelTile> surroundingTiles = Keepers.Map.TileMap.getSurroundingLandTiles(lt.Position);
             bool emptyAllAround = !surroundingTiles.Any(lt => lt.Detectable);
             if (emptyAllAround)
             {

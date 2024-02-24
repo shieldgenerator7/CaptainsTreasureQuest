@@ -14,11 +14,11 @@ public class LevelManager : MonoBehaviour
 
     public GameObject levelTilePrefab;
 
+    public MapKeeper mapKeeper;
+
     //
     // Runtime vars
     //
-    private TileMap tileMap;
-    public TileMap TileMap => tileMap;
 
     private int currentLevelIndex = 0;
     public int LevelIndex
@@ -74,7 +74,7 @@ public class LevelManager : MonoBehaviour
             {
                 if (Managers.Player.completedMap())
                 {
-                    if (getTile(tapPos).Revealed)
+                    if (mapKeeper.getTile(tapPos).Revealed)
                     {
                         gameOver = true;
                         reset(false);
@@ -91,7 +91,7 @@ public class LevelManager : MonoBehaviour
     }
     public void reset(bool resetToBeginning = true)
     {
-        if (tileMap != null)
+        if (mapKeeper.TileMap != null)
         {
             foreach (LevelTileController ltc in FindObjectsOfType<LevelTileController>())
             {
@@ -121,16 +121,6 @@ public class LevelManager : MonoBehaviour
         Managers.Player.reset();
     }
 
-    public LevelTile getTile(Vector2 pos)
-    {
-        int xIndex = getXIndex(pos);
-        int yIndex = getYIndex(pos);
-        return tileMap[xIndex, yIndex];
-    }
-    public Vector2 getPosition(LevelTile lt)
-    {
-        return getWorldPos(lt.x, lt.y);
-    }
     private LevelTileController getTileController(LevelTile lt)
     {
         return FindObjectsOfType<LevelTileController>().First(ltc => ltc.LevelTile == lt);
@@ -139,44 +129,13 @@ public class LevelManager : MonoBehaviour
 
 
     public LevelTile StartTile
-        => getTile(Managers.Start.transform.position);
+        => mapKeeper.getTile(Managers.Start.transform.position);
     public LevelTile XTile
-        => getTile(FindObjectOfType<MapLineUpdater>().LastRevealedSpot);
-
-    private int getXIndex(Vector2 pos)
-    {
-        return Mathf.RoundToInt(pos.x + Level.gridWidth / 2);
-    }
-
-    private int getYIndex(Vector2 pos)
-    {
-        return Mathf.RoundToInt(pos.y + Level.gridHeight / 2);
-    }
-
-    public Vector2 getGridPos(Vector2 worldPos)
-    {
-        return new Vector2(getXIndex(worldPos), getYIndex(worldPos));
-    }
-
-    public Vector2 getWorldPos(Vector2 iv)
-    {
-        return getWorldPos((int)iv.x, (int)iv.y);
-    }
-    public Vector2 getWorldPos(Vector2Int iv)
-    {
-        return getWorldPos(iv.x, iv.y);
-    }
-    public Vector2 getWorldPos(int ix, int iy)
-    {
-        Vector2 pos = Vector2.zero;
-        pos.x = ix - Level.gridWidth / 2;
-        pos.y = iy - Level.gridHeight / 2;
-        return pos;
-    }
+        => mapKeeper.getTile(FindObjectOfType<MapLineUpdater>().LastRevealedSpot);
 
     public bool tapOnObject(GameObject go, Vector2 tapPos)
     {
-        return getGridPos(go.transform.position) == getGridPos(tapPos);
+        return mapKeeper.getGridPos(go.transform.position) == mapKeeper.getGridPos(tapPos);
     }
 
     public int getDisplaySortingOrder(Vector2 pos)
@@ -202,18 +161,23 @@ public class LevelManager : MonoBehaviour
     {
         int width = level.gridWidth;
         int height = level.gridHeight;
-        tileMap = new TileMap(width, height);
+        TileMap tileMap = new TileMap(width, height);
+
         //Generate level
         foreach (LevelGenerator lgen in level.levelGenerators)
         {
             lgen.generate(tileMap);
         }
+
+        //Update MapKeeper
+        mapKeeper.switchMap(tileMap, width, height);
+
         //Instantiate GameObjects
         tileMap.getTiles(tile => tile.Walkable)
             .ForEach(tile =>
             {
                 GameObject go = GameObject.Instantiate(levelTilePrefab);
-                go.transform.position = getWorldPos(tile.x, tile.y);
+                go.transform.position = mapKeeper.getWorldPos(tile.x, tile.y);
                 go.GetComponent<LevelTileController>().LevelTile = tile;
                 go.transform.parent = transform;
             });
@@ -226,19 +190,21 @@ public class LevelManager : MonoBehaviour
     /// <param name="posToAvoid"></param>
     private void generateLevelPostTap(Vector2 posToAvoid)
     {
-        int itaX = getXIndex(posToAvoid);
-        int itaY = getYIndex(posToAvoid);
+        int itaX = mapKeeper.getXIndex(posToAvoid);
+        int itaY = mapKeeper.getYIndex(posToAvoid);
+        TileMap tileMap = mapKeeper.TileMap;
         foreach (LevelGenerator lgen in Level.postStartLevelGenerators)
         {
             lgen.generatePostStart(tileMap, itaX, itaY);
         }
 
         Managers.Start.SetActive(true);
-        Managers.Start.transform.position = getWorldPos(itaX, itaY);
+        Managers.Start.transform.position = mapKeeper.getWorldPos(itaX, itaY);
     }
 
     private void generatePostItemReveal(LevelTile.Contents content)
     {
+        TileMap tileMap = mapKeeper.TileMap;
         foreach (LevelGenerator lgen in Level.postRevealLevelGenerators)
         {
             lgen.generatePostReveal(tileMap, content);
@@ -247,6 +213,7 @@ public class LevelManager : MonoBehaviour
 
     public void processTapGesture(Vector2 tapPos)
     {
+        TileMap tileMap = mapKeeper.TileMap;
         if (foundItem && Managers.Player.Alive)
         {
             recalculateNumbers();
@@ -300,7 +267,7 @@ public class LevelManager : MonoBehaviour
         {
             return;
         }
-        LevelTile lt = getTile(tapPos);
+        LevelTile lt = mapKeeper.getTile(tapPos);
         if (lt != null && lt.Walkable)
         {
             //If it's revealed
@@ -346,7 +313,7 @@ public class LevelManager : MonoBehaviour
                         if (!neighbor.Flagged && !neighbor.Revealed)
                         {
                             //Flag it
-                            processFlagGesture(getPosition(neighbor));
+                            processFlagGesture(mapKeeper.getPosition(neighbor));
                         }
                     }
                 }
@@ -415,13 +382,13 @@ public class LevelManager : MonoBehaviour
         {
             return;
         }
-        LevelTile lt = getTile(flagPos);
+        LevelTile lt = mapKeeper.getTile(flagPos);
         if (!lt.Revealed)
         {
             lt.Flagged = !lt.Flagged;
             Managers.Effect.highlightChange(lt);
             //Update flag counters (fc)
-            foreach (LevelTile fc in tileMap.getSurroundingLandTiles(lt.Position))
+            foreach (LevelTile fc in mapKeeper.TileMap.getSurroundingLandTiles(lt.Position))
             {
                 if (fc.Revealed)
                 {
@@ -432,7 +399,7 @@ public class LevelManager : MonoBehaviour
     }
     public void processHoldGesture(Vector2 holdPos, bool finished)
     {
-        LevelTile lt = getTile(holdPos);
+        LevelTile lt = mapKeeper.getTile(holdPos);
         if (lt != null)
         {
             //don't process empty spaces
@@ -452,7 +419,7 @@ public class LevelManager : MonoBehaviour
                 Managers.Effect.highlightChange(lt);
             }
         }
-        frame.transform.position = getPosition(lt);
+        frame.transform.position = mapKeeper.getPosition(lt);
         if (finished)
         {
             usedFirstHoldFrame = false;
@@ -473,7 +440,7 @@ public class LevelManager : MonoBehaviour
     /// </summary>
     private void revealBoard()
     {
-        foreach (LevelTile lt in tileMap.getTiles(alt => !alt.Revealed))
+        foreach (LevelTile lt in mapKeeper.TileMap.getTiles(alt => !alt.Revealed))
         {
             if (lt.Walkable && !lt.Revealed)
             {
@@ -507,7 +474,7 @@ public class LevelManager : MonoBehaviour
                 - Camera.main.ScreenToWorldPoint(Vector2.zero);
             if (screenSizeWorld.x > Level.gridWidth && screenSizeWorld.y > Level.gridHeight)
             {
-                break;//all good hear
+                break;//all good here
             }
             Camera.main.orthographicSize++;
         }

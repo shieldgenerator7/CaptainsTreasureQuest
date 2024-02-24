@@ -1,69 +1,46 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class GestureProfile
 {//2018-01-22: copied from Stonicorn.GestureProfile
 
     /// <summary>
-    /// Called when this profile is set to the current one
+    /// Called when this profile is set to the current one,
+    /// or when the GestureManager switches off this profile to a different one
     /// </summary>
-    public virtual void activate() { }
-    /// <summary>
-    /// Called when the GestureManager switches off this profile to a different one
-    /// </summary>
-    public virtual void deactivate() { }
+    public virtual void activate(bool active) {
+        OnActivatedChanged?.Invoke(active);
+    }
+    public Action<bool> OnActivatedChanged;
 
     public virtual void processTapGesture(Vector3 curMPWorld)
-    {
-        if (Managers.Camera.AutoMoving)
-        {
-            Managers.Camera.pinpoint();
-            return;
-        }
-        LevelTile tile = Managers.Level.getTile(curMPWorld);
-        Vector2 movePos = Managers.Level.getWorldPos(tile.Position);
-        GameObject.FindFirstObjectByType<PieceController>().move(new Vector2Int((int)movePos.x, (int)movePos.y));
-        Managers.Level.processTapGesture(curMPWorld);
-        Managers.Camera.checkForAutomovement(curMPWorld);
+    {        
+        OnTap?.Invoke(curMPWorld);
     }
-    public virtual void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
-    {
-        if (Managers.Camera.AutoMoving)
-        {
-            Managers.Camera.pinpoint();
-            return;
-        }
-        Managers.Level.processHoldGesture(curMPWorld, finished);
-        if (finished)
-        {
-            Managers.Camera.checkForAutomovement(curMPWorld);
-        }
-    }
-    public void processDragGesture()
-    {
+    public Action<Vector3> OnTap;
 
+    public virtual void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
+    {        
+        OnHold?.Invoke(curMPWorld, holdTime, finished);
     }
+    public Action<Vector3, float, bool> OnHold;
+
+    public void processDragGesture(Vector3 origMPWorld, Vector3 curMPWorld)
+    {
+        OnDrag?.Invoke(origMPWorld, curMPWorld);
+    }
+    public Action<Vector3, Vector3> OnDrag;
+
     public virtual void processPinchGesture(int adjustment)
     {
-        Managers.Camera.adjustScalePoint(adjustment);
+        OnPinch?.Invoke(adjustment);
     }
+    public Action<int> OnPinch;
+
     public virtual void processCursorMoveGesture(Vector3 curMPWorld, bool show)
     {
-        Managers.Effect.hideCursor();
-        if (show)
-        {
-            LevelTile lt = Managers.Level.getTile(curMPWorld);
-            if (lt == null || !lt.Walkable)
-            {
-                return;
-            }
-            if (!lt.Revealed || Managers.Level.TileMap.getDetectedCount(lt.Position) > 0
-                || lt == Managers.Level.StartTile || (Managers.Player.completedMap() && lt == Managers.Level.XTile)
-                || (lt.Content == LevelTile.Contents.MAP)
-                )
-            {
-                Managers.Effect.moveCursor(lt);
-            }
-        }
+        OnCursorMove?.Invoke(curMPWorld, show);
     }
+    public Action<Vector3, bool> OnCursorMove;
 }

@@ -14,9 +14,6 @@ public class GestureManager : MonoBehaviour
     private GestureProfile currentGP;//the current gesture profile
     private Dictionary<string, GestureProfile> gestureProfiles = new Dictionary<string, GestureProfile>();//dict of valid gesture profiles
 
-    //Gesture Event Methods
-    public TapGesture tapGesture;
-
     //Original Positions
     private Vector3 origMP;//"original mouse position": the mouse position at the last mouse down (or tap down) event
     private Vector3 origMP2;//second orginal "mouse position" for second touch
@@ -49,9 +46,6 @@ public class GestureManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        gestureProfiles.Add("Main", new GestureProfile());
-        currentGP = gestureProfiles["Main"];
-
         Input.simulateMouseWithTouches = false;
     }
 
@@ -269,7 +263,6 @@ public class GestureManager : MonoBehaviour
                 {
                     tapCount++;
                     currentGP.processTapGesture(curMPWorld);
-                    tapGesture?.Invoke();
                 }
 
                 //Set all flags = false
@@ -348,6 +341,22 @@ public class GestureManager : MonoBehaviour
             Application.Quit();
         }
     }
+
+    /// <summary>
+    /// Adds the given GestureProfile to list of valid profiles under the given name
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="profile"></param>
+    public void addGestureProfile(string name, GestureProfile profile)
+    {
+        gestureProfiles.Add(name, profile);
+        if (currentGP == null)
+        {
+            currentGP = gestureProfiles[name];
+            switchGestureProfile(name);
+        }
+    }
+
     /// <summary>
     /// Switches the gesture profile to the profile with the given name
     /// </summary>
@@ -355,15 +364,10 @@ public class GestureManager : MonoBehaviour
     public void switchGestureProfile(string gpName)
     {
         //Deactivate current
-        currentGP.deactivate();
+        currentGP.activate(false);
         //Switch from current to new
         currentGP = gestureProfiles[gpName];
         //Activate new
-        currentGP.activate();
+        currentGP.activate(true);
     }
-
-    /// <summary>
-    /// Gets called when a tap gesture is processed
-    /// </summary>
-    public delegate void TapGesture();
 }

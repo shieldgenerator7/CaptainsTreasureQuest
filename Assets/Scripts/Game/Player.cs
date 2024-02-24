@@ -37,20 +37,13 @@ public class Player
         if (tile.Flagged) { return; }
 
         //reveal tile
-        if (reveal)
-        {
-            if (!revealedTiles.Contains(tile))
-            {
-                revealedTiles.Add(tile);
-            }
-        }
-        else
-        {
-            revealedTiles.Remove(tile);
-        }
+        bool changed = revealedTiles.Include(tile, reveal);
 
         //delegate
-        OnRevealTile?.Invoke(tile, reveal);
+        if (changed)
+        {
+            OnRevealTile?.Invoke(tile, reveal);
+        }
     }
     public Action<LevelTile, bool> OnRevealTile;
 

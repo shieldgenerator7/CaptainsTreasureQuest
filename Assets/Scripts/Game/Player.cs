@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Player
 {
-    public List<Piece> pieces;
+    public List<GamePiece> pieces = new List<GamePiece>();
 
     //the tiles where this player can see enemy pieces
     private List<Vector2Int> mapVision = new List<Vector2Int>();
@@ -19,7 +19,35 @@ public class Player
     //the tiles that this player has dug for treasure at
     private List<Vector2Int> mapDigged = new List<Vector2Int>();
 
+    #region Chess
+
+    //
+    // Pieces
+    //
+
+    public void addPiece(GamePiece piece)
+    {
+        this.pieces.Include(piece, true);
+        this.updateDetectTiles();
+        piece.OnPositionChanged += (pos) => { this.updateDetectTiles(); };
+    }
+
+    #endregion
+
     #region MineSweeper
+
+    //
+    // Detect Tile
+    //
+
+    private void updateDetectTiles()
+    {
+        mapDetect.Clear();
+        pieces.ForEach(piece =>
+        {
+            mapDetect.AddRange(piece.Detects);
+        });
+    }
 
     //
     // Reveal Tile
@@ -31,6 +59,8 @@ public class Player
     {
         //early exit: tile is flagged
         if (TileFlagged(pos)) { return; }
+        //early exit: tile is outside detect range
+        if (!mapDetect.Contains(pos)) { return; }
 
         //reveal tile
         bool changed = mapRevealed.Include(pos, reveal);

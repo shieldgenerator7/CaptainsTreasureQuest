@@ -7,9 +7,9 @@ using UnityEngine;
 public class MovePattern : ScriptableObject
 {
     [SerializeField]
-    public List<Vector2> allowedMoves = new List<Vector2>()
+    public List<Vector2Int> allowedMoves = new List<Vector2Int>()
     {
-        Vector2.zero
+        Vector2Int.zero
     };
 
     public int maxRange =>
@@ -27,7 +27,7 @@ public class MovePattern : ScriptableObject
         {
             if (!allowedMoves.Any(v => v.x == x && v.y == y))
             {
-                allowedMoves.Add(new Vector2(x, y));
+                allowedMoves.Add(new Vector2Int(x, y));
             }
         }
         else

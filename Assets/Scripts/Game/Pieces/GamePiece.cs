@@ -24,4 +24,15 @@ public class GamePiece
     {
         this.piece = piece;
     }
+
+    public bool canMove(Vector2Int pos)
+    {
+        Vector2Int dir = pos - _position;
+        return piece.movePattern.allowedMoves.Contains(dir);
+    }
+
+    public List<Vector2Int> Detects =>
+        piece.detectPattern.allowedMoves
+        .ConvertAll(v => v + _position);
+
 }

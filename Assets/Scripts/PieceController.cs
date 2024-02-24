@@ -21,6 +21,8 @@ public class PieceController : MonoBehaviour
         transform.position = (Vector2)piece.Position;
         targetPos = piece.Position;
         piece.OnPositionChanged += (pos) => targetPos = Keepers.Map.getWorldPos(pos);
+        //
+        Keepers.Player.addPiece(piece);//dirty: should not be accessing player directly
     }
 
     // Update is called once per frame
@@ -40,17 +42,11 @@ public class PieceController : MonoBehaviour
 
     public bool move(Vector2Int pos)
     {
-        if (!canMove(pos))
+        if (!piece.canMove(pos))
         {
             return false;
         }
         piece.Position = pos;
         return true;
-    }
-
-    public bool canMove(Vector2Int pos)
-    {
-        Vector2Int dir = pos - piece.Position;
-        return _piece.movePattern.allowedMoves.Contains(dir);
-    }
+    }    
 }

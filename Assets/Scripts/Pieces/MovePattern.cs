@@ -9,10 +9,6 @@ public class MovePattern : ScriptableObject
     //public List<MovePart> moveParts;
     public bool allowJump = false;
     public List<Vector2> allowedMoves;
-    [Range(0, 8)]
-    public int maxRange = 3;//typically 8
-    public int buffer = 15;
-    public Vector2 start = new Vector2(100, 200);
 
     public bool getMove(int x, int y)
     {

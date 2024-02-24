@@ -229,11 +229,6 @@ public class LevelManager : MonoBehaviour
             {
                 //Reveal the found LT
                 revealTile(foundLT);
-                //Reveal the tiles around the found LT
-                foreach (LevelTile levelTile in tileMap.getSurroundingLandTiles(foundLT.Position))
-                {
-                        revealTile(levelTile);
-                }
                 //Check if goals have been achieved
                 if (Managers.Player.GoalAchieved)
                 {

@@ -65,37 +65,16 @@ public class LevelTile
             : false;
         set
         {
-            if (!revealed)
-            {
+            //if (!revealed)
+            //{
                 flagged = value;
                 onFlaggedChanged?.Invoke(flagged);
-            }
+            //}
         }
     }
     private bool flagged = false;
     public delegate void OnFlaggedChanged(bool flagged);
     public OnFlaggedChanged onFlaggedChanged;
-
-    /// <summary>
-    /// True if this tile has been revealed
-    /// </summary>
-    public bool Revealed
-    {
-        get => (Walkable)
-            ? revealed
-            : true;
-        set
-        {
-            if (!flagged)
-            {
-                revealed = value;
-                onRevealedChanged?.Invoke(revealed);
-            }
-        }
-    }
-    private bool revealed = false;
-    public delegate void OnRevealedChanged(bool revealed);
-    public OnRevealedChanged onRevealedChanged;
 
     public bool Available
         => contents == Contents.NONE && !Locked && Walkable;

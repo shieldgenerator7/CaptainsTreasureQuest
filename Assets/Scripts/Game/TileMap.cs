@@ -133,7 +133,8 @@ public class TileMap
     /// <returns></returns>
     public int getAdjacentRevealedCount(Vector2Int pos, bool notRevealed = false)
     {
-        return getSurroundingLandTiles(pos).Count(slt => (slt.Revealed == true) != notRevealed);
+        Player player = Keepers.Player;
+        return getSurroundingLandTiles(pos).Count(slt => (player.TileRevealed(slt) == true) != notRevealed);
     }
 
     /// <summary>

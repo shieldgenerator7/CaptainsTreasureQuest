@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static LevelTile;
 
 public class Player
 {
@@ -16,4 +18,52 @@ public class Player
     public List<LevelTile> detectTiles = new List<LevelTile>();
     //the tiles that this player has dug for treasure at
     public List<LevelTile> dugTiles = new List<LevelTile>();
+
+    #region MineSweeper
+
+    //
+    // Reveal Tile
+    //
+
+    public bool TileRevealed(LevelTile tile) =>
+        (tile.Walkable)
+            ? revealedTiles.Contains(tile)
+            : true;
+    public void RevealTile(LevelTile tile, bool reveal = true)
+    {
+        //early exit: tile is water
+        if (!tile.Walkable) { return; }
+        //early exit: tile is flagged
+        if (tile.Flagged) { return; }
+
+        //reveal tile
+        if (reveal)
+        {
+            if (!revealedTiles.Contains(tile))
+            {
+                revealedTiles.Add(tile);
+            }
+        }
+        else
+        {
+            revealedTiles.Remove(tile);
+        }
+
+        //delegate
+        OnRevealTile?.Invoke(tile, reveal);
+    }
+    public Action<LevelTile, bool> OnRevealTile;
+
+    //
+    // Flag Tile
+    //
+
+    public Action<LevelTile, bool> OnFlagTile;
+
+    //
+    // Dig Tile
+    //
+
+    public Action<LevelTile> OnDigTile;
+    #endregion
 }

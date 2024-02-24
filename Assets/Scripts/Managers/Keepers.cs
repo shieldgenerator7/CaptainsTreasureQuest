@@ -29,4 +29,6 @@ public static class Keepers
             return gameKeeper;
         }
     }
+
+    public static Player Player => Game.Game.ActivePlayer;
 }

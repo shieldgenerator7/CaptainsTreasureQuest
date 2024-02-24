@@ -89,8 +89,9 @@ public class MapLineUpdater : MonoBehaviour
                 Vector2 size = CurrentLineSR.size;
                 size.x = Mathf.MoveTowards(size.x, targetSize.x, speed * Time.deltaTime);
                 Vector2 endPos = LastRevealedSpot;
+                Player player = Keepers.Player;
                 LevelTile lt = Keepers.Map.getTile(endPos);
-                if (!lt.Walkable || lt.Revealed)
+                if (!lt.Walkable || player.TileRevealed(lt))
                 {
                     CurrentLineSR.size = size;
                     if (okToMoveCamera && okToMoveCameraEver)
@@ -98,7 +99,7 @@ public class MapLineUpdater : MonoBehaviour
                         Managers.Camera.moveTo(endPos);
                     }
                 }
-                else if (!lt.Revealed)
+                else if (!player.TileRevealed(lt))
                 {
                     okToMoveCamera = true;
                 }

@@ -30,6 +30,8 @@ public class EffectManager : MonoBehaviour
     }
     private void highlightEffect(LevelTile tile, GameObject prefab, List<ChangeHighlighter> pool)
     {
+        Player player = Keepers.Player;
+        bool revealed = player.TileRevealed(tile);
         //Determine position
         Vector2 position = Keepers.Map.getPosition(tile);
         //Determine change type
@@ -38,7 +40,7 @@ public class EffectManager : MonoBehaviour
         {
             changeType = ChangeHighlighter.ChangeType.WARN;
         }
-        else if (tile.Revealed)
+        else if (revealed)
         {
             switch (tile.Content)
             {
@@ -70,11 +72,13 @@ public class EffectManager : MonoBehaviour
 
     public void moveCursor(LevelTile tile)
     {
+        Player player = Keepers.Player;
+        bool revealed = player.TileRevealed(tile);
         Vector2 position = Keepers.Map.getPosition(tile);
         cursorRevealed.transform.position = position;
         cursorHidden.transform.position = position;
-        cursorRevealed.gameObject.SetActive(tile.Revealed);
-        cursorHidden.gameObject.SetActive(!tile.Revealed);
+        cursorRevealed.gameObject.SetActive(revealed);
+        cursorHidden.gameObject.SetActive(!revealed);
     }
     public void hideCursor()
     {

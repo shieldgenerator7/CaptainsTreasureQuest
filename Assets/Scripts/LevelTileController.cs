@@ -24,7 +24,13 @@ public class LevelTileController : MonoBehaviour
     private void Start()
     {
         levelTile.onFlaggedChanged += updateFlagged;
-        levelTile.onRevealedChanged += updateRevealed;
+        Keepers.Player.OnRevealTile += (tile, reveal) =>
+        {
+            if (tile == levelTile)
+            {
+                updateRevealed(reveal);
+            }
+        };
         cover.GetComponent<SpriteRenderer>().sprite = levelTile.terrain.cover;
         background.GetComponent<SpriteRenderer>().sprite = levelTile.terrain.background;
     }

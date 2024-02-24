@@ -62,6 +62,7 @@ public class LevelManager : MonoBehaviour
     public bool checkReset(Vector2 tapPos)
     {
         bool gameOver = false;
+        Player player = Keepers.Player;
         if (Managers.Player.Alive)
         {
             if (tapOnObject(Managers.Start, tapPos))
@@ -76,7 +77,7 @@ public class LevelManager : MonoBehaviour
             {
                 if (Managers.Player.completedMap())
                 {
-                    if (mapKeeper.getTile(tapPos).Revealed)
+                    if (player.TileRevealed(mapKeeper.getTile(tapPos)))
                     {
                         gameOver = true;
                         reset(false);
@@ -219,6 +220,7 @@ public class LevelManager : MonoBehaviour
     public void processTapGesture(Vector2 tapPos)
     {
         TileMap tileMap = mapKeeper.TileMap;
+        Player player = Keepers.Player;
         if (foundItem && Managers.Player.Alive)
         {
             recalculateNumbers();
@@ -230,7 +232,7 @@ public class LevelManager : MonoBehaviour
                 //Reveal the tiles around the found LT
                 foreach (LevelTile levelTile in tileMap.getSurroundingLandTiles(foundLT.Position))
                 {
-                    if (levelTile.Revealed)
+                    if (player.TileRevealed(levelTile))
                     {
                         revealTile(levelTile, true);
                     }
@@ -276,7 +278,7 @@ public class LevelManager : MonoBehaviour
         if (lt != null && lt.Walkable)
         {
             //If it's revealed
-            if (lt.Revealed)
+            if (player.TileRevealed(lt))
             {
                 //Auto-Reveal
                 //If the count of surrounding flags equals
@@ -288,7 +290,7 @@ public class LevelManager : MonoBehaviour
                     //Reveal the surrounding non-flagged tiles
                     foreach (LevelTile neighbor in tileMap.getSurroundingLandTiles(lt.Position))
                     {
-                        if (!neighbor.Flagged && !neighbor.Revealed)
+                        if (!neighbor.Flagged && !player.TileRevealed(neighbor))
                         {
                             if (neighbor.Content == LevelTile.Contents.TRAP)
                             {
@@ -315,7 +317,7 @@ public class LevelManager : MonoBehaviour
                     //Flag the surrounding non-revealed tiles
                     foreach (LevelTile neighbor in tileMap.getSurroundingLandTiles(lt.Position))
                     {
-                        if (!neighbor.Flagged && !neighbor.Revealed)
+                        if (!neighbor.Flagged && !player.TileRevealed(neighbor))
                         {
                             //Flag it
                             processFlagGesture(mapKeeper.getPosition(neighbor));
@@ -331,13 +333,13 @@ public class LevelManager : MonoBehaviour
                     generateLevelPostTap(tapPos);
                     anyRevealed = true;
                 }
-                if ((!lt.Revealed) || tileMap.getDetectedCount(lt.Position) > 0)
+                if ((!player.TileRevealed(lt)) || tileMap.getDetectedCount(lt.Position) > 0)
                 {
                     Managers.Effect.highlightChange(lt);
                 }
                 LevelTile.Contents revealedItem = LevelTile.Contents.NONE;
                 bool shouldRevealBoard = false;
-                bool prevRevealed = lt.Revealed;
+                bool prevRevealed = player.TileRevealed(lt);
                 if (lt.Content == LevelTile.Contents.TRAP)
                 {
                     revealedItem = LevelTile.Contents.TRAP;
@@ -353,7 +355,7 @@ public class LevelManager : MonoBehaviour
                 }
                 if (revealedItem == LevelTile.Contents.TRAP || revealedItem == LevelTile.Contents.TREASURE)
                 {
-                    lt.Revealed = true;
+                    player.RevealTile(lt, true);
                     Managers.Effect.highlightChange(lt);
                     if (shouldRevealBoard)
                     {
@@ -387,15 +389,16 @@ public class LevelManager : MonoBehaviour
         {
             return;
         }
+        Player player = Keepers.Player;
         LevelTile lt = mapKeeper.getTile(flagPos);
-        if (!lt.Revealed)
+        if (!player.TileRevealed(lt))
         {
             lt.Flagged = !lt.Flagged;
             Managers.Effect.highlightChange(lt);
             //Update flag counters (fc)
             foreach (LevelTile fc in mapKeeper.TileMap.getSurroundingLandTiles(lt.Position))
             {
-                if (fc.Revealed)
+                if (player.TileRevealed(fc))
                 {
                     getTileController(fc).numberDisplayer.displayNumber();
                 }
@@ -404,6 +407,7 @@ public class LevelManager : MonoBehaviour
     }
     public void processHoldGesture(Vector2 holdPos, bool finished)
     {
+        Player player = Keepers.Player;
         LevelTile lt = mapKeeper.getTile(holdPos);
         if (lt != null)
         {
@@ -415,7 +419,7 @@ public class LevelManager : MonoBehaviour
             usedFirstHoldFrame = true;
             processFlagGesture(holdPos);
             Vibration.Vibrate(75);
-            if (lt.Revealed)
+            if (player.TileRevealed(lt))
             {
                 frame.SetActive(true);
             }
@@ -434,7 +438,8 @@ public class LevelManager : MonoBehaviour
 
     private void revealTile(LevelTile lt, bool forceReveal = false)
     {
-        if ((!lt.Revealed || forceReveal) && !lt.Flagged)
+        Player player = Keepers.Player;
+        if ((!player.TileRevealed(lt) || forceReveal) && !lt.Flagged)
         {
             Managers.TileRevealer.revealTilesAround(lt);
         }
@@ -445,15 +450,16 @@ public class LevelManager : MonoBehaviour
     /// </summary>
     private void revealBoard()
     {
-        foreach (LevelTile lt in mapKeeper.TileMap.getTiles(alt => !alt.Revealed))
+        Player player = Keepers.Player;
+        foreach (LevelTile lt in mapKeeper.TileMap.getTiles(alt => !player.TileRevealed(alt)))
         {
-            if (lt.Walkable && !lt.Revealed)
+            if (lt.Walkable && !player.TileRevealed(lt))
             {
                 if (lt.Content == LevelTile.Contents.TREASURE
                     || lt.Content == LevelTile.Contents.TRAP
                     || lt.Content == LevelTile.Contents.MAP)
                 {
-                    lt.Revealed = true;
+                    player.RevealTile(lt, true);
                     Managers.Effect.highlightChange(lt);
                 }
             }

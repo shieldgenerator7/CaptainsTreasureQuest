@@ -36,4 +36,18 @@ public class PieceController : MonoBehaviour
     {
         piece.Position = pos;
     }
+
+    public void move(Vector2Int pos)
+    {
+        if (canMove(pos))
+        {
+            piece.Position = pos;
+        }
+    }
+
+    public bool canMove(Vector2Int pos)
+    {
+        Vector2Int dir = pos - piece.Position;
+        return _piece.movePattern.allowedMoves.Contains(dir);
+    }
 }

@@ -8,7 +8,7 @@ public class TileRevealer : MonoBehaviour
     [Tooltip("How long between revealing tile layers")]
     public float revealDelay = 0.1f;
 
-    private List<LevelTile> tilesToReveal = new List<LevelTile>();
+    private List<Vector2Int> tilesToReveal = new List<Vector2Int>();
 
     private float lastRevealTime = 0;
 
@@ -29,35 +29,38 @@ public class TileRevealer : MonoBehaviour
         }
     }
 
-    public void revealTilesAround(LevelTile lt)
+    public void revealTilesAround(Vector2Int pos)
     {
-        tilesToReveal.Add(lt);
+        tilesToReveal.Add(pos);
         enabled = true;
     }
 
     private void processReveal()
     {
         Player player = Keepers.Player;
-        List<LevelTile> revealLater = new List<LevelTile>();
-        foreach (LevelTile lt in tilesToReveal)
+        List<Vector2Int> revealNow = new List<Vector2Int>(tilesToReveal);
+        List<Vector2Int> revealLater = new List<Vector2Int>();
+        tilesToReveal.Clear();
+        foreach (Vector2Int pos in revealNow)
         {
-            player.RevealTile(lt.Position, true);
+            player.RevealTile(pos, true);
             //Surrounding tiles
-            List<LevelTile> surroundingTiles = Keepers.Map.TileMap.getSurroundingLandTiles(lt.Position);
+            List<LevelTile> surroundingTiles = Keepers.Map.TileMap.getSurroundingLandTiles(pos);
             bool emptyAllAround = !surroundingTiles.Any(lt => lt.Detectable);
             if (emptyAllAround)
             {
                 foreach (LevelTile slt in surroundingTiles)
                 {
-                    if (!player.TileRevealed(slt.Position) && !player.TileFlagged(slt.Position)
-                        && !tilesToReveal.Contains(slt) && !revealLater.Contains(slt)
+                    Vector2Int spos = slt.Position;
+                    if (!player.TileRevealed(spos) && !player.TileFlagged(spos)
+                        && !revealNow.Contains(spos) && !revealLater.Contains(spos)
                         )
                     {
-                        revealLater.Add(slt);
+                        revealLater.Add(spos);
                     }
                 }
             }
         }
-        tilesToReveal = revealLater;
+        tilesToReveal.AddRange(revealLater);
     }
 }

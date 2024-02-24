@@ -20,6 +20,7 @@ public class GestureProfile
             Managers.Camera.pinpoint();
             return;
         }
+        GameObject.FindObjectOfType<PieceController>().move(curMPWorld);
         Managers.Level.processTapGesture(curMPWorld);
         Managers.Camera.checkForAutomovement(curMPWorld);
     }

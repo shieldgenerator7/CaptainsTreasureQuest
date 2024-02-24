@@ -16,4 +16,17 @@ public static class Keepers
             return mapKeeper;
         }
     }
+
+    static GameKeeper gameKeeper;
+    public static GameKeeper Game
+    {
+        get
+        {
+            if (gameKeeper  == null)
+            {
+                gameKeeper = new GameKeeper();
+            }
+            return gameKeeper;
+        }
+    }
 }

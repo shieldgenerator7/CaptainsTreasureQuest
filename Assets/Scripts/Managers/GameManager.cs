@@ -37,6 +37,9 @@ public class GameManager : MonoBehaviour
             PieceController piece = GameObject.FindFirstObjectByType<PieceController>();
             piece.teleport(pos);
         };
+
+        //Keepers
+        Keepers.Map.OnMapChanged += (map) => Keepers.Game.newGame(map);
     }
 
     GestureProfile createMineSweeperGestureProfile()

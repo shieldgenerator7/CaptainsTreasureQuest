@@ -2,16 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
+using UnityEngine.UIElements;
 
 [CustomEditor(typeof(MovePattern))]
 public class MovePatternEditor : Editor
 {
-    Vector2 toggleSize = new Vector2(30, 30);
+    Vector2 toggleSize = new Vector2(10, 10);
     int buffer = 15;
-    Vector2 start = new Vector2(0, 0);
+    Vector2 start = new Vector2(0, 10);
     int maxRange = 8;
     //const int MAX_RANGE = 8;
+
+    public override VisualElement CreateInspectorGUI()
+    {
+        MovePattern mp = (MovePattern)target;
+        int mprange = mp.maxRange;
+        maxRange = (mprange > 0) ? mprange : maxRange;
+        return base.CreateInspectorGUI();
+    }
 
     public override void OnInspectorGUI()
     {

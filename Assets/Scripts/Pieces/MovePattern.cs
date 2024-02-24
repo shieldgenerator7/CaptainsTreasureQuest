@@ -8,7 +8,15 @@ public class MovePattern : ScriptableObject
 {
     //public List<MovePart> moveParts;
     public bool allowJump = false;
-    public List<Vector2> allowedMoves;
+    public List<Vector2> allowedMoves = new List<Vector2>()
+    {
+        Vector2.zero
+    };
+
+    public int maxRange =>
+        (allowedMoves.Count > 0)
+            ? (int)allowedMoves.Max(v => Mathf.Max(v.x, v.y))
+            : 0;
 
     public bool getMove(int x, int y)
     {

@@ -32,8 +32,8 @@ public class PieceController : MonoBehaviour
         }
     }
 
-    public void move(Vector2 pos)
+    public void move(Vector2Int pos)
     {
-        piece.Position = new Vector2Int((int)pos.x, (int)pos.y);
+        piece.Position = pos;
     }
 }

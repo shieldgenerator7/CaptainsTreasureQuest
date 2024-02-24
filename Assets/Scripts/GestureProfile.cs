@@ -20,7 +20,9 @@ public class GestureProfile
             Managers.Camera.pinpoint();
             return;
         }
-        GameObject.FindObjectOfType<PieceController>().move(curMPWorld);
+        LevelTile tile = Managers.Level.getTile(curMPWorld);
+        Vector2 movePos = Managers.Level.getWorldPos(tile.Position);
+        GameObject.FindFirstObjectByType<PieceController>().move(new Vector2Int((int)movePos.x, (int)movePos.y));
         Managers.Level.processTapGesture(curMPWorld);
         Managers.Camera.checkForAutomovement(curMPWorld);
     }

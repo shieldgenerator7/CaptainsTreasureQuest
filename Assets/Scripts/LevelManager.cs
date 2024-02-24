@@ -162,6 +162,10 @@ public class LevelManager : MonoBehaviour
     {
         return getWorldPos((int)iv.x, (int)iv.y);
     }
+    public Vector2 getWorldPos(Vector2Int iv)
+    {
+        return getWorldPos(iv.x, iv.y);
+    }
     public Vector2 getWorldPos(int ix, int iy)
     {
         Vector2 pos = Vector2.zero;

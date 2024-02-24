@@ -55,19 +55,6 @@ public class Managers : MonoBehaviour
         }
     }
 
-    private GestureManager gestureManager;
-    public static GestureManager Gesture
-    {
-        get
-        {
-            if (instance.gestureManager == null)
-            {
-                instance.gestureManager = FindObjectOfType<GestureManager>();
-            }
-            return instance.gestureManager;
-        }
-    }
-
     private EffectManager effectManager;
     public static EffectManager Effect
     {

@@ -4,14 +4,24 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    //Settings
+    public GestureSettings gestureSettings;
+
+    //Managers
     public Managers managers;
     public LevelManager levelManager;
-    public GestureManager gestureManager;
+    private GestureManager gestureManager;
 
     // Start is called before the first frame update
     void Awake()
     {
+        init();
         hookupDelegates();
+    }
+
+    void init()
+    {
+        gestureManager = new GestureManager(gestureSettings);
     }
 
     void hookupDelegates()
@@ -79,5 +89,12 @@ public class GameManager : MonoBehaviour
         };
         //
         return gpMineSweeper;
+    }
+
+    private void Update()
+    {
+        float time = Time.time;
+        float deltaTime = Time.deltaTime;
+        gestureManager.Update(time, deltaTime);
     }
 }

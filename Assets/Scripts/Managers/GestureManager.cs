@@ -2,13 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GestureManager : MonoBehaviour
+public class GestureManager
 {//2018-01-22: copied from Stonicorn.GestureManager
-
-    //Settings
-    public float dragThreshold = 50;//how far from the original mouse position the current position has to be to count as a drag
-    public float holdThreshold = 0.1f;//how long the tap has to be held to count as a hold (in seconds)
-    public float orthoZoomSpeed = 0.5f;
 
     //Gesture Profiles
     private GestureProfile currentGP;//the current gesture profile
@@ -41,21 +36,26 @@ public class GestureManager : MonoBehaviour
     public const float holdTimeScale = 0.5f;//how fast time moves during a hold gesture (1 = normal, 0.5 = half speed, 2 = double speed)
     public const float holdTimeScaleRecip = 1 / holdTimeScale;
     public bool isRightClick = false;
+    //
+    GestureSettings settings;
+    float dragThreshold;
 
 
     // Use this for initialization
-    void Start()
+    public GestureManager(GestureSettings settings)
     {
         Input.simulateMouseWithTouches = false;
+        this.settings = settings;
+        dragThreshold = Mathf.Min(Screen.width, Screen.height) / settings.dragThresholdPercent;
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update(float time, float deltaTime)
     {
         //
         //Threshold updating
         //
-        float newDT = Mathf.Min(Screen.width, Screen.height) / 20;
+        float newDT = Mathf.Min(Screen.width, Screen.height) / settings.dragThresholdPercent;
         if (dragThreshold != newDT)
         {
             dragThreshold = newDT;
@@ -165,7 +165,7 @@ public class GestureManager : MonoBehaviour
                     curMP = origMP;
                     maxMouseMovement = 0;
                     origCP = Camera.main.transform.position;
-                    origTime = Time.time;
+                    origTime = time;
                     curTime = origTime;
                 }
                 else if (touchCount == 2)
@@ -180,7 +180,7 @@ public class GestureManager : MonoBehaviour
                 {
                     maxMouseMovement = mm;
                 }
-                curTime = Time.time;
+                curTime = time;
                 holdTime = curTime - origTime;
                 break;
             case ClickState.None: break;
@@ -225,7 +225,7 @@ public class GestureManager : MonoBehaviour
                         cameraDragInProgress = true;
                     }
                 }
-                if (holdTime > holdThreshold
+                if (holdTime > settings.holdThreshold
                     || isRightClick)
                 {
                     if (!isDrag)

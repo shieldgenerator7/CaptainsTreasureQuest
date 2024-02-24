@@ -1164,7 +1164,6 @@ GameObject:
   - component: {fileID: 1897694197}
   - component: {fileID: 1897694198}
   - component: {fileID: 1897694199}
-  - component: {fileID: 1897694201}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1276,27 +1275,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e785b7f718613cc478c637274affaff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gestureSettings: {fileID: 11400000, guid: a273cbea8d614494ab4f6af971198282, type: 2}
   managers: {fileID: 1897694194}
   levelManager: {fileID: 1897694199}
-  gestureManager: {fileID: 1897694201}
---- !u!114 &1897694201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1897694193}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e10f1bc9d08e70b4898b8b9d15ddbf70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dragThreshold: 50
-  holdThreshold: 0.15
-  orthoZoomSpeed: 0.5
-  tapCount: 0
-  cameraDragInProgress: 0
-  isRightClick: 0
 --- !u!1 &2018190591
 GameObject:
   m_ObjectHideFlags: 0
